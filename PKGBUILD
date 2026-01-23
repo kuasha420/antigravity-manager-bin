@@ -1,7 +1,7 @@
 # Maintainer: FrancoStino <info@davideladisa.it>
 pkgname=antigravity-manager-bin
 pkgver=0.3.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Professional multi-account manager for Google Gemini & Claude AI"
 arch=('x86_64')
 url="https://github.com/Draculabo/AntigravityManager"
@@ -25,15 +25,24 @@ package() {
     # Extract RPM directly into pkgdir
     bsdtar -xf "${pkgname}-${pkgver}.rpm" -C "${pkgdir}"
 
-    # Fix permissions
-    chmod 755 "${pkgdir}/opt/Antigravity Manager/antigravity-manager"
-
-    # Create symlink in /usr/bin
-    install -dm755 "${pkgdir}/usr/bin"
-    ln -sf "/opt/Antigravity Manager/antigravity-manager" \
-        "${pkgdir}/usr/bin/antigravity-manager"
-
-    # Install license
-    install -Dm644 "${pkgdir}/opt/Antigravity Manager/LICENSE"* \
-        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 2>/dev/null || true
+    # Find where the binary actually is
+    BINARY=$(find "${pkgdir}" -name "antigravity-manager" -type f 2>/dev/null | head -1)
+    
+    if [ -n "$BINARY" ]; then
+        chmod 755 "$BINARY"
+        
+        # Create symlink in /usr/bin
+        install -dm755 "${pkgdir}/usr/bin"
+        ln -sf "${BINARY#${pkgdir}}" "${pkgdir}/usr/bin/antigravity-manager"
+        
+        # Find and install license
+        LICENSE=$(find "${pkgdir}" -name "LICENSE*" -type f 2>/dev/null | head -1)
+        if [ -n "$LICENSE" ]; then
+            install -Dm644 "$LICENSE" \
+                "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+        fi
+    else
+        echo "ERROR: Could not find antigravity-manager binary"
+        exit 1
+    fi
 }
