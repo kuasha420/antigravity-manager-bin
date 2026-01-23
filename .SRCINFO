@@ -1,7 +1,7 @@
 pkgbase = antigravity-manager-bin
 	pkgdesc = Professional multi-account manager for Google Gemini & Claude AI
 	pkgver = 0.3.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/Draculabo/AntigravityManager
 	arch = x86_64
 	license = LicenseRef-CC-BY-NC-SA-4.0
