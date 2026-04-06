@@ -1,9 +1,9 @@
 # Maintainer: FrancoStino <info@davideladisa.it>
 pkgname=antigravity-manager-bin
-pkgver=0.3.0
-pkgrel=5
+pkgver=0.10.0
+pkgrel=1
 pkgdesc="Professional multi-account manager for Google Gemini & Claude AI"
-arch=('x86_64')
+arch=('x86_64' 'aarch64')
 url="https://github.com/Draculabo/AntigravityManager"
 license=('LicenseRef-CC-BY-NC-SA-4.0')
 depends=('gtk3' 'nss' 'alsa-lib')
@@ -14,28 +14,40 @@ optdepends=(
 provides=('antigravity-manager')
 conflicts=('antigravity-manager' 'antigravity-manager-git')
 
-# Use upstream RPM as source
-source=("${pkgname}-${pkgver}.rpm::https://github.com/Draculabo/AntigravityManager/releases/download/v${pkgver}/antigravity-manager-${pkgver}-1.x86_64.rpm")
-sha256sums=('4dde116b72ef8de5e5fb55e6761b3715d52c032fdeaca5382e7e453ac822da97')
-noextract=("${pkgname}-${pkgver}.rpm")
+# Arch-specific upstream RPM sources
+# Upstream changed filename convention from v0.4.0+ : antigravity-manager-* → Antigravity.Manager-*
+_upstream_base="https://github.com/Draculabo/AntigravityManager/releases/download/v${pkgver}"
+source_x86_64=("Antigravity.Manager-${pkgver}-1.x86_64.rpm::${_upstream_base}/Antigravity.Manager-${pkgver}-1.x86_64.rpm")
+source_aarch64=("Antigravity.Manager-${pkgver}-1.aarch64.rpm::${_upstream_base}/Antigravity.Manager-${pkgver}-1.aarch64.rpm")
+sha256sums_x86_64=('a2f630f4a812bb1d68f8429f0e7d5393a6f567866a2c69ebe6122d4c1bc11bab')
+sha256sums_aarch64=('61a80cdcec689974bcd77a8fd75af8111dc2b843bc2c9574f90de044a268b28c')
+noextract=("Antigravity.Manager-${pkgver}-1.x86_64.rpm"
+           "Antigravity.Manager-${pkgver}-1.aarch64.rpm")
 
 package() {
     cd "${srcdir}"
 
-    # Extract RPM directly into pkgdir
-    bsdtar -xf "${pkgname}-${pkgver}.rpm" -C "${pkgdir}"
+    # Select the correct RPM for the current architecture
+    case "$CARCH" in
+        x86_64)  _rpm="Antigravity.Manager-${pkgver}-1.x86_64.rpm" ;;
+        aarch64) _rpm="Antigravity.Manager-${pkgver}-1.aarch64.rpm" ;;
+        *) echo "ERROR: Unsupported architecture: $CARCH"; exit 1 ;;
+    esac
 
-    # Find where the binary actually is
+    # Extract RPM directly into pkgdir
+    bsdtar -xf "${_rpm}" -C "${pkgdir}"
+
+    # Find where the binary actually is (handles both /usr/bin and /opt/** layouts)
     BINARY=$(find "${pkgdir}" -name "antigravity-manager" -type f 2>/dev/null | head -1)
-    
+
     if [ -n "$BINARY" ]; then
         chmod 755 "$BINARY"
-        
-        # Create symlink in /usr/bin
+
+        # Ensure /usr/bin symlink exists
         install -dm755 "${pkgdir}/usr/bin"
         ln -sf "${BINARY#${pkgdir}}" "${pkgdir}/usr/bin/antigravity-manager"
-        
-        # Find and install license
+
+        # Install license if present
         LICENSE=$(find "${pkgdir}" -name "LICENSE*" -type f 2>/dev/null | head -1)
         if [ -n "$LICENSE" ]; then
             install -Dm644 "$LICENSE" \

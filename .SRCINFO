@@ -1,9 +1,10 @@
 pkgbase = antigravity-manager-bin
 	pkgdesc = Professional multi-account manager for Google Gemini & Claude AI
-	pkgver = 0.3.0
-	pkgrel = 5
+	pkgver = 0.10.0
+	pkgrel = 1
 	url = https://github.com/Draculabo/AntigravityManager
 	arch = x86_64
+	arch = aarch64
 	license = LicenseRef-CC-BY-NC-SA-4.0
 	depends = gtk3
 	depends = nss
@@ -13,8 +14,11 @@ pkgbase = antigravity-manager-bin
 	provides = antigravity-manager
 	conflicts = antigravity-manager
 	conflicts = antigravity-manager-git
-	noextract = antigravity-manager-bin-0.3.0.rpm
-	source = antigravity-manager-bin-0.3.0.rpm::https://github.com/Draculabo/AntigravityManager/releases/download/v0.3.0/antigravity-manager-0.3.0-1.x86_64.rpm
-	sha256sums = 4dde116b72ef8de5e5fb55e6761b3715d52c032fdeaca5382e7e453ac822da97
+	noextract = Antigravity.Manager-0.10.0-1.x86_64.rpm
+	noextract = Antigravity.Manager-0.10.0-1.aarch64.rpm
+	source_x86_64 = Antigravity.Manager-0.10.0-1.x86_64.rpm::https://github.com/Draculabo/AntigravityManager/releases/download/v0.10.0/Antigravity.Manager-0.10.0-1.x86_64.rpm
+	sha256sums_x86_64 = a2f630f4a812bb1d68f8429f0e7d5393a6f567866a2c69ebe6122d4c1bc11bab
+	source_aarch64 = Antigravity.Manager-0.10.0-1.aarch64.rpm::https://github.com/Draculabo/AntigravityManager/releases/download/v0.10.0/Antigravity.Manager-0.10.0-1.aarch64.rpm
+	sha256sums_aarch64 = 61a80cdcec689974bcd77a8fd75af8111dc2b843bc2c9574f90de044a268b28c
 
 pkgname = antigravity-manager-bin
