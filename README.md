@@ -39,10 +39,10 @@ makepkg -si
 
 ## Package details
 
-| Field | Value |
-|---|---|
-| Upstream | [Draculabo/AntigravityManager](https://github.com/Draculabo/AntigravityManager) |
-| AUR page | [antigravity-manager-bin](https://aur.archlinux.org/packages/antigravity-manager-bin) |
-| Architectures | `x86_64`, `aarch64` |
-| Source format | Upstream RPM, extracted via `bsdtar` |
-| License | CC-BY-NC-SA-4.0 |
+| Field         | Value                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------- |
+| Upstream      | [Draculabo/AntigravityManager](https://github.com/Draculabo/AntigravityManager)       |
+| AUR page      | [antigravity-manager-bin](https://aur.archlinux.org/packages/antigravity-manager-bin) |
+| Architectures | `x86_64`, `aarch64`                                                                   |
+| Source format | Upstream RPM, extracted via `bsdtar`                                                  |
+| License       | CC-BY-NC-SA-4.0                                                                       |
